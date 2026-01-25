@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI Platform Dashboard</title>
+  <link rel="stylesheet" href="home.css">
+</head>
+
+<body>
+<!-- 🌌 PARTICLE BACKGROUND -->
+<canvas id="bgCanvas"></canvas>
+
+<!-- Glow -->
+<div class="bg-glow"></div>
+
+<div class="dashboard">
+
+  <aside class="sidebar">
+    <div class="logo">
+      <h2>AI<span>Hub</span></h2>
+      <p>Dashboard</p>
+    </div>
+
+    <nav class="menu">
+      <a class="active">🏠 Home</a>
+      <a>✍️ AI Blog Generator</a>
+      <a>📄 Resume Analyzer</a>
+      <a>📌 My Projects</a>
+      <a>👤 Profile</a>
+    </nav>
+
+    <button class="logout-btn">🚪 Logout</button>
+  </aside>
+
+  <main class="main">
+
+    <header class="topbar">
+      <div>
+        <h1>Welcome back, <span>Engineer Zishan</span> 👋</h1>
+        <p>Let’s build smarter content today.</p>
+      </div>
+
+      <div class="top-actions">
+        <input placeholder="Search..." />
+        <button class="btn">+ New</button>
+      </div>
+    </header>
+
+    <section class="stats">
+      <div class="stat-card">Total Blogs<br><b>24</b></div>
+      <div class="stat-card">Resume Score<br><b>82%</b></div>
+      <div class="stat-card">Projects<br><b>6</b></div>
+      <div class="stat-card">AI Credits<br><b>120</b></div>
+    </section>
+
+<!-- STATS -->
+      <section class="stats">
+        <div class="stat-card">
+          <h3>Total Blogs</h3>
+          <p class="big">24</p>
+          <span>📈 +5 this week</span>
+        </div>
+
+        <div class="stat-card">
+          <h3>Resume Score</h3>
+          <p class="big">82%</p>
+          <span>✅ Good quality</span>
+        </div>
+
+        <div class="stat-card">
+          <h3>Projects</h3>
+          <p class="big">6</p>
+          <span>🚀 Keep growing</span>
+        </div>
+
+        <div class="stat-card">
+          <h3>AI Credits</h3>
+          <p class="big">120</p>
+          <span>⚡ Available</span>
+        </div>
+      </section>
+
+      <!-- CONTENT GRID -->
+      <section class="grid">
+
+        <!-- RECENT BLOGS -->
+        <div class="panel">
+          <div class="panel-head">
+            <h2>Recent Blogs</h2>
+            <a href="#" class="link">View all</a>
+          </div>
+
+          <div class="list">
+            <div class="list-item">
+              <div>
+                <h4>How AI is changing resumes</h4>
+                <p>Last edited: 2 hours ago</p>
+              </div>
+              <button class="mini-btn">Open</button>
+            </div>
+
+            <div class="list-item">
+              <div>
+                <h4>Top 10 Interview Tips</h4>
+                <p>Last edited: 1 day ago</p>
+              </div>
+              <button class="mini-btn">Open</button>
+            </div>
+
+            <div class="list-item">
+              <div>
+                <h4>Best Skills for IT Students</h4>
+                <p>Last edited: 3 days ago</p>
+              </div>
+              <button class="mini-btn">Open</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- QUICK TOOLS -->
+        <div class="panel">
+          <div class="panel-head">
+            <h2>Quick Tools</h2>
+            <a href="#" class="link">Explore</a>
+          </div>
+
+          <div class="tools">
+            <div class="tool-card">
+              <h3>⚡ Generate Blog</h3>
+              <p>Write AI blog in seconds.</p>
+              <button class="btn full">Start</button>
+            </div>
+
+            <div class="tool-card">
+              <h3>📄 Analyze Resume</h3>
+              <p>Check ATS & improvements.</p>
+              <button class="btn full">Upload</button>
+            </div>
+
+            <div class="tool-card">
+              <h3>🎯 Career Suggestions</h3>
+              <p>AI based job role match.</p>
+              <button class="btn full">Check</button>
+            </div>
+          </div>
+        </div>
+  </main>
+</div>
+
+<script src="bg.js"></script>
+</body>
+</html>

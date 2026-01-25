@@ -1,0 +1,129 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+body {
+  height: 100vh;
+  overflow: hidden;
+  background: #050b2c;
+}
+
+/* CANVAS BACKGROUND */
+#bgCanvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: -1;
+}
+
+/* MAIN CARD */
+.container {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.card {
+  width: 900px;
+  max-width: 95%;
+  display: flex;
+  border-radius: 20px;
+  overflow: hidden;
+  backdrop-filter: blur(18px);
+  background: rgba(255,255,255,0.12);
+  box-shadow: 0 30px 70px rgba(0,0,0,0.5);
+}
+
+/* LEFT PANEL */
+.left {
+  flex: 1;
+  padding: 60px 45px;
+  color: white;
+  background: linear-gradient(135deg, rgba(8, 76, 143, 0.9), rgba(8, 76, 143, 0.9));
+}
+
+.left h1 {
+  font-size: 36px;
+  margin-bottom: 20px;
+}
+
+.left p {
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+/* RIGHT PANEL */
+.right {
+  flex: 1;
+  padding: 60px 45px;
+  background: rgba(255,255,255,0.95);
+}
+
+.right form {
+  display: flex;
+  flex-direction: column;
+  animation: fadeIn 0.5s ease;
+}
+
+.right h2 {
+  margin-bottom: 30px;
+  color: #333;
+}
+
+.right input {
+  width: 100%;
+  padding: 13px;
+  margin-bottom: 18px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 15px;
+}
+
+.main-btn {
+  width: 100%;
+  padding: 13px;
+  background: rgba(8, 76, 143, 0.9);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.main-btn:hover {
+  background: rgba(8, 76, 143, 0.9);
+}
+
+.right .switch {
+  margin-top: 18px;
+  text-align: center;
+  font-size: 14px;
+  color: #555;
+}
+
+.right .switch span {
+  color: rgba(8, 76, 143, 0.9);
+  font-weight: bold;
+  cursor: pointer;
+}
+
+/* FADE IN ANIMATION */
+@keyframes fadeIn {
+  from {opacity: 0; transform: translateY(20px);}
+  to {opacity: 1; transform: translateY(0);}
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+  .card {
+    flex-direction: column;
+  }
+  .left, .right {
+    padding: 40px 25px;
+  }
+}
