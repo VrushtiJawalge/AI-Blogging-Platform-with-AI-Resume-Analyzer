@@ -24,8 +24,8 @@
 
     <nav class="menu">
       <a class="active">🏠 Home</a>
-      <a>✍️ AI Blog Generator</a>
-      <a>📄 Resume Analyzer</a>
+      <a href="blog.html">✍️ AI Blog Studio</a>
+      <a href="resume-home.html">📄AI Resume Studio</a>
       <a>📌 My Projects</a>
       <a>👤 Profile</a>
     </nav>
@@ -122,6 +122,7 @@
             <div class="tool-card">
               <h3>⚡ Generate Blog</h3>
               <p>Write AI blog in seconds.</p>
+                <button class="btn full" onclick="openBlog()">Start</button>
               <button class="btn full">Start</button>
             </div>
 
@@ -140,8 +141,11 @@
         </div>
   </main>
 </div>
-
+<script>
+function openBlog() {
+  window.location.href = "sample.html"; // replace with your blog page
+}
+</script>
 <script src="bg.js"></script>
 </body>
 </html>
-
