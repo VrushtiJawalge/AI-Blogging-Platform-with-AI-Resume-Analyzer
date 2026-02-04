@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AIHub | Resume Intelligence</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Outfit:wght@700;900&display=swap"
+      rel="stylesheet"/>
+    <link rel="stylesheet" href="resume-analyzer.css">
+  </head>
+  <body>
+    <canvas id="bgCanvas"></canvas>
+    <div class="bg-glow"></div>
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <div class="side-logo">AI<span>Hub</span></div>
+
+      <nav class="side-links">
+        <a href="home.html">🏠 <span>Home</span></a>
+        <a href="blog.html" class="active">✍️ <span>AI Blog Studio</span></a>
+        <a href="resume-home.html">📄 <span>AI Resume Studio</span></a>
+        <a href="#">📌 <span>Projects</span></a>
+        <a href="#">👤 <span>Profile</span></a>
+      </nav>
+    </aside>
+
+    <main class="viewport">
+      <div class="page-header">
+        <h1>Resume Analyzer</h1>
+        <p>Analyze resumes with AI-powered ATS intelligence</p>
+      </div>
+
+      <div class="analyzer-card">
+        <h1 style="font-family: &quot;Outfit&quot;; margin-bottom: 0.5rem">
+          Resume ATS Optimizer
+        </h1>
+        <p style="color: #64748b; margin-bottom: 2rem">
+          Upload your resume file or paste text to see how you rank against the
+          job.
+        </p>
+
+        <div
+          class="upload-zone"
+          onclick="document.getElementById('fileInput').click()"
+        >
+          <div style="font-size: 3rem; margin-bottom: 10px">📄</div>
+          <h3 id="fileNameDisplay">Click to upload Resume (PDF/DOCX/TXT)</h3>
+          <p style="color: #94a3b8; font-size: 0.8rem">
+            Maximum file size: 5MB
+          </p>
+          <input
+            type="file"
+            id="fileInput"
+            hidden
+            accept=".txt,.pdf,.docx"
+            onchange="handleFileUpload(event)"
+          />
+        </div>
+
+        <div class="grid-split">
+          <div>
+            <label
+              style="
+                font-weight: 700;
+                font-size: 0.8rem;
+                text-transform: uppercase;
+                color: var(--accent);
+              "
+              >Extracted Resume Text</label
+            >
+            <textarea
+              id="resumeText"
+              placeholder="Your resume content will appear here after upload..."
+            ></textarea>
+          </div>
+          <div>
+            <label
+              style="
+                font-weight: 700;
+                font-size: 0.8rem;
+                text-transform: uppercase;
+                color: var(--accent);
+              "
+              >Target Job Description</label
+            >
+            <textarea
+              id="jobText"
+              placeholder="Paste the Job Description you are applying for here..."
+            ></textarea>
+          </div>
+        </div>
+
+        <button class="action-btn" onclick="runAnalysis()">
+          ANALYZE MATCH SCORE
+        </button>
+
+        <div id="results">
+          <div class="score-box">
+            <div class="circle-progress" id="scoreVal">0%</div>
+            <div>
+              <h2 id="statusHeader">Calculating...</h2>
+              <p id="statusSub">
+                We are comparing your experience with the job requirements.
+              </p>
+            </div>
+          </div>
+
+          <div class="grid-split">
+            <div
+              style="background: #fafafa; padding: 1.5rem; border-radius: 15px"
+            >
+              <h3 style="margin-bottom: 1rem; font-size: 0.9rem">
+                MISSING KEYWORDS
+              </h3>
+              <div id="missingKeywords"></div>
+            </div>
+            <div
+              style="background: #fafafa; padding: 1.5rem; border-radius: 15px"
+            >
+              <h3 style="margin-bottom: 1rem; font-size: 0.9rem">
+                AI IMPROVEMENT PLAN
+              </h3>
+              <div id="recoList"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+    <script src="resume-analyzer.js"></script>
+        <script src="bg.js"></script>
+</html>

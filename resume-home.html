@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AI Resume Studio | AIHub</title>
+<link rel="stylesheet" href="resume-home.css">
+    
+  </head>
+
+  <body>
+    <canvas id="bgCanvas"></canvas>
+<div class="bg-glow"></div>
+    <canvas id="bgCanvas"></canvas>
+    <div class="bg-glow"></div>
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <div class="side-logo">AI<span>Hub</span></div>
+
+      <nav class="side-links">
+        <a href="home.html">🏠 <span>Home</span></a>
+        <a href="blog.html" class="active">✍️ <span>AI Blog Studio</span></a>
+        <a href="resume-home.html">📄 <span>AI Resume Studio</span></a>
+        <a href="#">📌 <span>Projects</span></a>
+        <a href="#">👤 <span>Profile</span></a>
+      </nav>
+    </aside>
+
+    <!-- CONTENT -->
+    <div class="app-content">
+      <div class="page-title">
+        <h1>AI Blog Studio</h1>
+        <p>Create & analyze blogs with AI</p>
+      </div>
+
+      <div class="mode-switch">
+        <a href="resume-creator.html"><button onclick="showCreator()">✍️ Resume Creator</button></a>
+        <a href="resume-analyzer.html"><button onclick="showCreator()">📄 Resume Analyzer</button></a>
+      </div>
+
+      <!-- CREATOR -->
+      <link rel="stylesheet" href="react.html">
+      <!-- ANALYZER -->
+      <div id="analyzerMode" style="display: none">
+        <div class="main-grid">
+          <div class="panel">
+            <h3>Paste Blog</h3>
+            <textarea
+              id="analyzeText"
+              placeholder="Paste your blog here..."
+            ></textarea>
+
+            <button class="generate-btn" onclick="analyzeBlog()">
+              Analyze
+            </button>
+          </div>
+
+          <div class="panel">
+            <h3>Preview</h3>
+            <textarea
+              id="previewBox"
+              placeholder="Content preview..."
+            ></textarea>
+          </div>
+
+          <div class="panel">
+            <h3>SEO Insights</h3>
+
+<div class="insight">
+  <strong>Word Count</strong><span id="wc">—</span>
+</div>
+
+<div class="insight">
+  <strong>Reading Time</strong><span id="time">—</span>
+</div>
+
+<div class="insight">
+  <strong>SEO Score</strong><span id="seo">—</span>
+
+  <div class="progress-box">
+    <div class="progress-bar">
+      <div class="progress-fill" id="seoBar"></div>
+    </div>
+  </div>
+</div>
+
+<div class="insight">
+  <strong>Keyword Density</strong><span id="density">—</span>
+
+  <div class="progress-box">
+    <div class="progress-bar">
+      <div class="progress-fill" id="densityBar"></div>
+    </div>
+  </div>
+</div>
+
+<div class="insight">
+  <strong>Top Keywords</strong><span id="top3">—</span>
+</div>
+
+<div class="insight">
+  <strong>Paragraphs</strong><span id="para">—</span>
+</div>
+
+<div class="insight">
+  <strong>Readability</strong><span id="read">—</span>
+
+  <div class="progress-box">
+    <div class="progress-bar">
+      <div class="progress-fill" id="readBar"></div>
+    </div>
+  </div>
+</div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="resume-home.js"></script>
+    <script src="bg.js"></script>
+  </body>
+</html>
