@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AI Blog Studio | AIHub</title>
+    <link rel="stylesheet" href="blog.css">
+  </head>
+
+  <body>
+    <canvas id="bgCanvas"></canvas>
+    <div class="bg-glow"></div>
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <div class="side-logo">AI<span>Hub</span></div>
+
+      <nav class="side-links">
+        <a href="#">🏠 <span>Home</span></a>
+        <a href="blog.html" class="active">✍️ <span>AI Blog Studio</span></a>
+        <a href="#">📄 <span>Resume Analyzer</span></a>
+        <a href="#">📌 <span>Projects</span></a>
+        <a href="#">👤 <span>Profile</span></a>
+      </nav>
+    </aside>
+
+    <!-- CONTENT -->
+    <div class="app-content">
+      <div class="page-title">
+        <h1>AI Blog Studio</h1>
+        <p>Create & analyze blogs with AI</p>
+      </div>
+
+      <div class="mode-switch">
+        <button onclick="showCreator()">✍️ Blog Creator</button>
+        <button onclick="showAnalyzer()">📊 Blog Analyzer</button>
+      </div>
+
+      <!-- CREATOR -->
+      <div class="main-grid" id="creatorMode">
+        <div class="panel">
+          <h3>Blog Settings</h3>
+
+          <div class="input-group">
+            <label>Topic</label>
+            <input placeholder="Enter topic" />
+          </div>
+
+          <div class="input-group">
+            <label>Tone</label>
+            <select>
+              <option>Professional</option>
+              <option>Casual</option>
+              <option>Technical</option>
+            </select>
+          </div>
+
+          <div class="input-group">
+            <label>Length</label>
+            <select>
+              <option>Short</option>
+              <option>Medium</option>
+              <option>Long</option>
+            </select>
+          </div>
+
+          <button class="generate-btn">Generate Blog</button>
+        </div>
+
+        <div class="panel">
+          <h3>Blog Editor</h3>
+          <textarea placeholder="AI content will appear here..."></textarea>
+        </div>
+
+        <div class="panel">
+          <h3>AI Insights</h3>
+          <div class="insight">SEO Score <span>82%</span></div>
+          <div class="insight">Readability <span>Good</span></div>
+          <div class="insight">Keywords <span>AI, Blog</span></div>
+          <button class="generate-btn">Improve with AI</button>
+        </div>
+      </div>
+
+      <!-- ANALYZER -->
+      <div id="analyzerMode" style="display: none">
+        <div class="main-grid">
+          <div class="panel">
+            <h3>Paste Blog</h3>
+            <textarea
+              id="analyzeText"
+              placeholder="Paste your blog here..."
+            ></textarea>
+
+            <button class="generate-btn" onclick="analyzeBlog()">
+              Analyze
+            </button>
+          </div>
+
+          <div class="panel">
+            <h3>Preview</h3>
+            <textarea
+              id="previewBox"
+              placeholder="Content preview..."
+            ></textarea>
+          </div>
+
+          <div class="panel">
+            <h3>SEO Insights</h3>
+
+<div class="insight">
+  <strong>Word Count</strong><span id="wc">—</span>
+</div>
+
+<div class="insight">
+  <strong>Reading Time</strong><span id="time">—</span>
+</div>
+
+<div class="insight">
+  <strong>SEO Score</strong><span id="seo">—</span>
+
+  <div class="progress-box">
+    <div class="progress-bar">
+      <div class="progress-fill" id="seoBar"></div>
+    </div>
+  </div>
+</div>
+
+<div class="insight">
+  <strong>Keyword Density</strong><span id="density">—</span>
+
+  <div class="progress-box">
+    <div class="progress-bar">
+      <div class="progress-fill" id="densityBar"></div>
+    </div>
+  </div>
+</div>
+
+<div class="insight">
+  <strong>Top Keywords</strong><span id="top3">—</span>
+</div>
+
+<div class="insight">
+  <strong>Paragraphs</strong><span id="para">—</span>
+</div>
+
+<div class="insight">
+  <strong>Readability</strong><span id="read">—</span>
+
+  <div class="progress-box">
+    <div class="progress-bar">
+      <div class="progress-fill" id="readBar"></div>
+    </div>
+  </div>
+</div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="blog.js"></script>
+  </body>
+</html>
