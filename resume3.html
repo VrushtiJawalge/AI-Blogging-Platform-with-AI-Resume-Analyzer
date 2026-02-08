@@ -1,0 +1,614 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Editable Student Resume</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800&family=Open+Sans:wght@400;600&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+
+    <style>
+      :root {
+        --primary-color: #7a1a40;
+        --text-dark: #333;
+        --text-light: #ffffff;
+        --border-color: #d1d1d1;
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body {
+        font-family: "Open Sans", sans-serif;
+        background: #050b2c;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 40px 0;
+        min-height: 100vh;
+        color: white;
+        overflow-x: hidden;
+      }
+
+      /* CANVAS */
+      #bgCanvas {
+        position: fixed;
+        inset: 0;
+        z-index: -2;
+      }
+      .bg-glow {
+        position: fixed;
+        inset: 0;
+        background: radial-gradient(
+          circle at 30% 20%,
+          rgba(77, 163, 255, 0.15),
+          transparent 70%
+        );
+        z-index: -1;
+      }
+
+      /* ===== SIDEBAR ===== */
+      .sidebar {
+        position: fixed;
+        left: 20px;
+        top: 20px;
+        bottom: 20px;
+        width: 70px;
+        background: linear-gradient(135deg, #0a2540, #1d6dbc);
+        border-radius: 20px;
+        padding: 18px 10px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 25px;
+        transition: 0.35s;
+        z-index: 10;
+        overflow: hidden;
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+      }
+
+      .sidebar:hover {
+        width: 220px;
+      }
+
+      .side-logo {
+        font-size: 22px;
+        font-weight: 700;
+        color: #fff;
+        white-space: nowrap;
+      }
+      .side-logo span {
+        color: var(--accent);
+      }
+
+      .side-links {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        gap: 12px;
+      }
+
+      .side-links a {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        padding: 12px 14px;
+        color: #e5e7eb;
+        text-decoration: none;
+        border-radius: 14px;
+        font-size: 14px;
+        white-space: nowrap;
+        transition: 0.3s;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .side-links a span {
+        opacity: 0;
+        transition: 0.3s;
+      }
+      .sidebar:hover .side-links a span {
+        opacity: 1;
+      }
+
+      .side-links a:hover {
+        background: rgba(77, 163, 255, 0.18);
+        transform: translateX(6px);
+        box-shadow: 0 0 12px rgba(77, 163, 255, 0.5);
+      }
+
+      .side-links a.active {
+        background: #1e5fa8;
+        animation: pulse 2s infinite;
+      }
+      .resume-container {
+        width: 850px;
+        background-color: white;
+        display: flex;
+        min-height: 1100px;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+      }
+
+      /* Sidebar */
+      .sidebar2 {
+        width: 35%;
+        background-color: var(--primary-color);
+        color: var(--text-light);
+        padding: 40px 30px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .sidebar2 .editable {
+        color: white;
+      }
+      .sidebar2 .editable-empty {
+        color: rgba(255, 255, 255, 0.7);
+      }
+      .sidebar2 .contact-info strong {
+        color: white;
+      }
+      .sidebar2 .contact-info p {
+        color: white;
+      }
+
+      .profile-img-container {
+        width: 200px;
+        height: 200px;
+        border-radius: 50%;
+        overflow: hidden;
+        border: 5px solid rgba(255, 255, 255, 0.2);
+        margin-bottom: 30px;
+        cursor: pointer;
+      }
+
+      .profile-img-container img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      .user-name {
+        font-family: "Montserrat", sans-serif;
+        font-size: 32px;
+        font-weight: 800;
+        margin-bottom: 40px;
+        text-align: center;
+      }
+
+      .editable {
+        outline: none;
+        min-height: 20px;
+        cursor: text;
+        width: 100%;
+        display: inline-block;
+        font-size: 15px;
+      }
+
+      .contact-item {
+        display: flex;
+        align-items: center;
+        width: 100%;
+        margin-bottom: 25px;
+      }
+
+      .icon-box {
+        width: 45px;
+        height: 45px;
+        background-color: white;
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-right: 15px;
+        flex-shrink: 0;
+      }
+
+      .icon-box i {
+        color: var(--primary-color);
+        font-size: 18px;
+      }
+      .contact-info {
+        width: calc(100% - 60px);
+      }
+      .contact-info strong {
+        display: block;
+        font-size: 15px;
+        margin-bottom: 2px;
+      }
+
+      /* Main content */
+      .main-content {
+        width: 65%;
+        padding: 50px 40px;
+        color: #333;
+      }
+
+      section {
+        margin-bottom: 40px;
+      }
+
+      .section-header {
+        display: flex;
+        align-items: center;
+        color: var(--primary-color);
+        margin-bottom: 15px;
+      }
+
+      .section-header .icon-circle {
+        width: 40px;
+        height: 40px;
+        background-color: var(--primary-color);
+        color: white;
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-right: 15px;
+        font-size: 18px;
+      }
+
+      .section-header h2 {
+        font-family: "Montserrat", sans-serif;
+        font-size: 24px;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+      }
+
+      hr {
+        border: 0;
+        border-top: 1.5px solid var(--border-color);
+        margin: 20px 0;
+      }
+
+      ul {
+        list-style: none;
+        padding-left: 10px;
+      }
+      ul li {
+        position: relative;
+        padding-left: 20px;
+        margin-bottom: 12px;
+        font-size: 16px;
+        line-height: 1.5;
+      }
+
+      ul li::before {
+        content: "•";
+        color: black;
+        font-weight: bold;
+        display: inline-block;
+        width: 1em;
+        margin-left: -1em;
+      }
+
+      .download-btn {
+        margin-top: 20px;
+        padding: 12px 25px;
+        background-color: var(--primary-color);
+        color: white;
+        font-size: 16px;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+      }
+      .download-btn:hover {
+        background-color: #145f3b;
+      }
+
+      .add-btn {
+        background-color: #7a1a40;
+        color: white;
+        border: none;
+        padding: 5px 12px;
+        border-radius: 5px;
+        cursor: pointer;
+        margin-top: 5px;
+        font-size: 14px;
+      }
+      .add-btn:hover {
+        background-color: #5f1430;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <div class="side-logo">AI<span>Hub</span></div>
+
+      <nav class="side-links">
+        <a href="home.html">🏠 <span>Home</span></a>
+        <a href="blog.html">✍️ <span>AI Blog Studio</span></a>
+        <a href="resume-home.html" class="active"
+          >📄 <span>AI Resume Studio</span></a
+        >
+        <a href="#">📌 <span>Projects</span></a>
+        <a href="#">👤 <span>Profile</span></a>
+      </nav>
+    </aside>
+
+    <div class="resume-container" id="resume">
+      <div class="sidebar2">
+        <div class="profile-img-container" id="photoBox">
+          <img
+            id="photo"
+            src="https://via.placeholder.com/200"
+            alt="Profile Picture"
+          />
+        </div>
+        <input type="file" id="photoInput" hidden />
+
+        <h1
+          class="user-name editable editable-empty"
+          data-placeholder="Your Name"
+          contenteditable="true"
+          style="font-size: 20px"
+        >
+          Your Name
+        </h1>
+
+        <div class="contact-item">
+          <div class="icon-box"><i class="fas fa-school"></i></div>
+          <div class="contact-info">
+            <strong>School:</strong>
+            <p
+              class="editable editable-empty"
+              data-placeholder="Virginia Valley High School"
+              contenteditable="true"
+            >
+              Virginia Valley High School
+            </p>
+          </div>
+        </div>
+
+        <div class="contact-item">
+          <div class="icon-box"><i class="fas fa-city"></i></div>
+          <div class="contact-info">
+            <strong>City:</strong>
+            <p
+              class="editable editable-empty"
+              data-placeholder="Richmond"
+              contenteditable="true"
+            >
+              Richmond
+            </p>
+          </div>
+        </div>
+
+        <div class="contact-item">
+          <div class="icon-box"><i class="fas fa-envelope"></i></div>
+          <div class="contact-info">
+            <strong>Email:</strong>
+            <p
+              class="editable editable-empty"
+              data-placeholder="yourname@student.vhs.org"
+              contenteditable="true"
+            >
+              yourname@student.vhs.org
+            </p>
+          </div>
+        </div>
+
+        <div class="contact-item">
+          <div class="icon-box"><i class="fas fa-map-marker-alt"></i></div>
+          <div class="contact-info">
+            <strong>State:</strong>
+            <p
+              class="editable editable-empty"
+              data-placeholder="Virginia"
+              contenteditable="true"
+            >
+              Virginia
+            </p>
+          </div>
+        </div>
+
+        <div class="contact-item">
+          <div class="icon-box"><i class="fas fa-phone"></i></div>
+          <div class="contact-info">
+            <strong>Phone:</strong>
+            <p
+              class="editable editable-empty"
+              data-placeholder="(555) 555-5555"
+              contenteditable="true"
+            >
+              (555) 555-5555
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="main-content">
+        <!-- Education Section -->
+        <section>
+          <div class="section-header">
+            <div class="icon-circle"><i class="fas fa-user-graduate"></i></div>
+            <h2>Education</h2>
+          </div>
+          <ul id="educationList">
+            <li
+              class="editable editable-empty"
+              data-placeholder="2022-present - Virginia Valley HS"
+              contenteditable="true"
+            >
+              2022-present - Virginia Valley HS
+            </li>
+            <li
+              class="editable editable-empty"
+              data-placeholder="2020-2022 - Red Valley MS"
+              contenteditable="true"
+            >
+              2020-2022 - Red Valley MS
+            </li>
+          </ul>
+          <button class="add-btn" data-target="educationList">+ Add</button>
+        </section>
+
+        <!-- Achievements Section -->
+        <hr />
+        <section>
+          <div class="section-header">
+            <div class="icon-circle"><i class="fas fa-award"></i></div>
+            <h2>Major Achievements</h2>
+          </div>
+          <ul id="achievementList">
+            <li
+              class="editable editable-empty"
+              data-placeholder="Winner of the State Math Competition (2024)"
+              contenteditable="true"
+            >
+              Winner of the State Math Competition (2024)
+            </li>
+            <li
+              class="editable editable-empty"
+              data-placeholder="Received municipal scholarship for academic excellence (2023)"
+              contenteditable="true"
+            >
+              Received municipal scholarship for academic excellence (2023)
+            </li>
+          </ul>
+          <button class="add-btn" data-target="achievementList">+ Add</button>
+        </section>
+
+        <!-- Soft Skills Section -->
+        <hr />
+        <section>
+          <div class="section-header">
+            <div class="icon-circle"><i class="fas fa-tools"></i></div>
+            <h2>Soft Skills</h2>
+          </div>
+          <ul id="skillsList">
+            <li
+              class="editable editable-empty"
+              data-placeholder="Hardworking and reliable"
+              contenteditable="true"
+            >
+              Hardworking and reliable
+            </li>
+            <li
+              class="editable editable-empty"
+              data-placeholder="Good communication skills"
+              contenteditable="true"
+            >
+              Good communication skills
+            </li>
+          </ul>
+          <button class="add-btn" data-target="skillsList">+ Add</button>
+        </section>
+
+        <!-- Work Experience Section -->
+        <hr />
+        <section>
+          <div class="section-header">
+            <div class="icon-circle"><i class="fas fa-briefcase"></i></div>
+            <h2>Work Experience</h2>
+          </div>
+          <ul id="workList">
+            <li
+              class="editable editable-empty"
+              data-placeholder="Office Assistant, Hardware Supply"
+              contenteditable="true"
+            >
+              Office Assistant, Hardware Supply
+            </li>
+          </ul>
+          <button class="add-btn" data-target="workList">+ Add</button>
+        </section>
+      </div>
+    </div>
+
+    <button class="download-btn" id="downloadBtn">Download PDF</button>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+    <script>
+      // Editable placeholders
+      function setupEditable(el) {
+        const placeholder = el.getAttribute("data-placeholder");
+        if (!el.textContent.trim()) {
+          el.textContent = placeholder;
+          el.classList.add("editable-empty");
+        }
+        el.addEventListener("focus", () => {
+          if (el.classList.contains("editable-empty")) {
+            el.textContent = "";
+            el.classList.remove("editable-empty");
+            if (el.classList.contains("user-name")) el.style.fontSize = "20px";
+          }
+        });
+        el.addEventListener("blur", () => {
+          if (!el.textContent.trim()) {
+            el.textContent = placeholder;
+            el.classList.add("editable-empty");
+            if (el.classList.contains("user-name")) el.style.fontSize = "32px";
+          }
+        });
+        // Allow backspace delete empty li
+        el.addEventListener("keydown", (e) => {
+          if (e.key === "Backspace" && !el.textContent.trim()) {
+            if (el.tagName === "LI") el.remove();
+          }
+        });
+      }
+      document.querySelectorAll(".editable").forEach(setupEditable);
+
+      // Upload photo
+      const photoBox = document.getElementById("photoBox");
+      const photoInput = document.getElementById("photoInput");
+      const photo = document.getElementById("photo");
+      photoBox.onclick = () => photoInput.click();
+      photoInput.onchange = (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = () => (photo.src = reader.result);
+        reader.readAsDataURL(file);
+      };
+
+      // Add new points
+      document.querySelectorAll(".add-btn").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const listId = btn.getAttribute("data-target");
+          const ul = document.getElementById(listId);
+          const firstLi = ul.querySelector("li");
+          const li = document.createElement("li");
+          li.className = firstLi.className;
+          li.setAttribute("contenteditable", "true");
+          li.setAttribute(
+            "data-placeholder",
+            firstLi.getAttribute("data-placeholder"),
+          );
+          li.textContent = firstLi.getAttribute("data-placeholder");
+          ul.appendChild(li);
+          setupEditable(li);
+          li.focus();
+        });
+      });
+
+      // PDF export
+      async function exportPDF() {
+        const { jsPDF } = window.jspdf;
+        const resume = document.getElementById("resume");
+        const canvas = await html2canvas(resume, { scale: 2 });
+        const imgData = canvas.toDataURL("image/jpeg", 1);
+        const pdf = new jsPDF("p", "px", [794, 1123]);
+        pdf.addImage(imgData, "JPEG", 0, 0, 794, 1123);
+        pdf.save("Resume.pdf");
+      }
+      document
+        .getElementById("downloadBtn")
+        .addEventListener("click", exportPDF);
+    </script>
+    <script src="bg.js"></script>
+  </body>
+</html>

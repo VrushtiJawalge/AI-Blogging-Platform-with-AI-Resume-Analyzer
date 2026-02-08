@@ -1,0 +1,497 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Smart Editable Resume</title>
+
+    <style>
+      :root {
+        --primary: #c49b76;
+        --sidebar: #e5d5c5;
+        --dark: #333;
+      }
+
+      body {
+        font-family: "Open Sans", sans-serif;
+        background: #050b2c;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 40px 0;
+        min-height: 100vh;
+        color: rgb(0, 0, 0);
+        overflow-x: hidden;
+      }
+      /* CANVAS */
+      #bgCanvas {
+        position: fixed;
+        inset: 0;
+        z-index: -2;
+      }
+      .bg-glow {
+        position: fixed;
+        inset: 0;
+        background: radial-gradient(
+          circle at 30% 20%,
+          rgba(77, 163, 255, 0.15),
+          transparent 70%
+        );
+        z-index: -1;
+      }
+
+      /* ===== SIDEBAR ===== */
+      .sidebar {
+        position: fixed;
+        left: 20px;
+        top: 20px;
+        bottom: 20px;
+        width: 70px;
+        background: linear-gradient(135deg, #0a2540, #1d6dbc);
+        border-radius: 20px;
+        padding: 18px 10px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 25px;
+        transition: 0.35s;
+        z-index: 10;
+        overflow: hidden;
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+      }
+
+      .sidebar:hover {
+        width: 220px;
+      }
+
+      .side-logo {
+        font-size: 22px;
+        font-weight: 700;
+        color: #fff;
+        white-space: nowrap;
+      }
+      .side-logo span {
+        color: #1453c9;
+      }
+
+      .side-links {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        gap: 12px;
+      }
+
+      .side-links a {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        padding: 12px 14px;
+        color: #e5e7eb;
+        text-decoration: none;
+        border-radius: 14px;
+        font-size: 14px;
+        white-space: nowrap;
+        transition: 0.3s;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .side-links a span {
+        opacity: 0;
+        transition: 0.3s;
+      }
+      .sidebar:hover .side-links a span {
+        opacity: 1;
+      }
+
+      .side-links a:hover {
+        background: rgba(77, 163, 255, 0.18);
+        transform: translateX(6px);
+        box-shadow: 0 0 12px rgba(77, 163, 255, 0.5);
+      }
+
+      .side-links a.active {
+        background: #1e5fa8;
+        animation: pulse 2s infinite;
+      }
+      .resume {
+        width: 794px;
+        height: 1123px;
+        background: #fff;
+        display: flex;
+        flex-direction: column;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+      }
+
+      /* HEADER */
+      .header {
+        display: flex;
+        height: 180px;
+      }
+      .header-left {
+        width: 35%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .profile {
+        width: 150px;
+        height: 150px;
+        border-radius: 50%;
+        border: 8px solid var(--primary);
+        overflow: hidden;
+        cursor: pointer;
+      }
+
+      .profile img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      .header-right {
+        width: 65%;
+        background: var(--primary);
+        margin-left: -50px;
+        border-radius: 80px 0 0 80px;
+        padding: 40px 40px 40px 80px;
+        color: white;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .header-right h1 {
+        font-size: 34px;
+        margin: 0;
+      }
+      .contact {
+        font-size: 14px;
+        line-height: 1.6;
+      }
+
+      /* MAIN */
+      .main {
+        display: flex;
+        flex: 1;
+      }
+
+      /* LEFT */
+      .left {
+        width: 60%;
+        padding: 40px;
+      }
+      .section-title {
+        background: var(--primary);
+        color: white;
+        padding: 6px 20px;
+        border-radius: 20px;
+        display: inline-block;
+        font-size: 22px;
+        font-weight: bold;
+        margin: 18px 0;
+      }
+
+      ul {
+        padding-left: 20px;
+      }
+      ul li {
+        font-size: 20px;
+        line-height: 1.6;
+      }
+
+      .exp h4 {
+        margin: 0;
+        color: var(--primary);
+        font-size: 15px;
+      }
+      .exp span {
+        font-size: 15px;
+        color: #777;
+      }
+
+      /* RIGHT */
+      .right {
+        width: 40%;
+        background: var(--sidebar);
+        padding: 40px 30px;
+      }
+      .summary {
+        font-size: 20px;
+        line-height: 1.8;
+        margin-bottom: 30px;
+      }
+
+      .right h3 {
+        border-bottom: 2px solid var(--primary);
+        display: inline-block;
+        margin-bottom: 15px;
+      }
+
+      /* SKILLS */
+      .skill {
+        font-size: 20px;
+        margin-bottom: 16px;
+      }
+
+      .skill-name {
+        font-size: 14px;
+        font-weight: 500;
+      }
+
+      .skill-percent {
+        font-size: 13px;
+        float: right;
+      }
+
+      .bar {
+        height: 8px;
+        background: white;
+        border-radius: 5px;
+        overflow: hidden;
+        margin-top: 5px;
+      }
+
+      .fill {
+        height: 100%;
+        background: #333;
+        border-radius: 5px;
+        width: 0%;
+        transition: 0.3s;
+      }
+
+      /* BUTTONS */
+      .add-btn {
+        background: var(--primary);
+        border: none;
+        color: white;
+        padding: 4px 10px;
+        border-radius: 20px;
+        cursor: pointer;
+        font-size: 13px;
+        margin-top: 5px;
+      }
+
+      .download {
+        margin-top: 20px;
+        padding: 12px 30px;
+        background: var(--primary);
+        color: white;
+        border: none;
+        border-radius: 6px;
+        font-weight: bold;
+        cursor: pointer;
+      }
+.download:hover {
+        background-color: #145f3b;
+      }
+      /* clean edit */
+      [contenteditable]:focus {
+        outline: none;
+        background: rgba(196, 155, 118, 0.12);
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <div class="side-logo">AI<span>Hub</span></div>
+
+      <nav class="side-links">
+        <a href="home.html">🏠 <span>Home</span></a>
+        <a href="blog.html">✍️ <span>AI Blog Studio</span></a>
+        <a href="resume-home.html" class="active"
+          >📄 <span>AI Resume Studio</span></a
+        >
+        <a href="#">📌 <span>Projects</span></a>
+        <a href="#">👤 <span>Profile</span></a>
+      </nav>
+    </aside>
+
+    <div class="resume" id="resume">
+      <div class="header">
+        <div class="header-left">
+          <div class="profile" id="photoBox">
+            <img id="photo" src="https://via.placeholder.com/150" />
+          </div>
+          <input type="file" id="photoInput" hidden />
+        </div>
+
+        <div class="header-right">
+          <h1 contenteditable="true">Your Name</h1>
+          <div class="contact" contenteditable="true">
+            Phone Number<br />Email Address<br />City, State
+          </div>
+        </div>
+      </div>
+
+      <div class="main">
+        <div class="left">
+          <div class="section-title">Professional Experience</div>
+
+          <div class="exp">
+            <h4 contenteditable="true">Company Name</h4>
+            <span contenteditable="true">Job Role (Year-Year)</span>
+
+            <ul id="expList">
+              <li contenteditable="true">Your achievement here</li>
+              <li contenteditable="true">Your responsibility here</li>
+            </ul>
+
+            <button class="add-btn" onclick="addBullet('expList')">
+              + 
+            </button>
+          </div>
+
+          <div class="section-title">Education</div>
+
+          <ul id="eduList">
+            <li contenteditable="true">Your college / school name</li>
+            <li contenteditable="true">Your course / year</li>
+          </ul>
+
+          <button class="add-btn" onclick="addBullet('eduList')">
+            +
+        </div>
+
+        <div class="right">
+          <div class="section-title">Professional Summary</div>
+
+          <div class="summary" contenteditable="true">
+            Hardworking student eager to apply academic skills in a professional
+            setting. Detail-oriented student with strong project leadership and
+            presentation experience.
+          </div>
+
+          <h3>Key Skills</h3>
+
+          <div class="skill">
+            <div>
+              <span class="skill-name" contenteditable="true"
+                >Communication</span
+              >
+              <span
+                class="skill-percent"
+                contenteditable="true"
+                oninput="updateSkill(this)"
+                >85%</span
+              >
+            </div>
+            <div class="bar"><div class="fill"></div></div>
+          </div>
+
+          <div class="skill">
+            <div>
+              <span class="skill-name" contenteditable="true"
+                >Time Management</span
+              >
+              <span
+                class="skill-percent"
+                contenteditable="true"
+                oninput="updateSkill(this)"
+                >80%</span
+              >
+            </div>
+            <div class="bar"><div class="fill"></div></div>
+          </div>
+
+          <div class="skill">
+            <div>
+              <span class="skill-name" contenteditable="true"
+                >Adaptability</span
+              >
+              <span
+                class="skill-percent"
+                contenteditable="true"
+                oninput="updateSkill(this)"
+                >70%</span
+              >
+            </div>
+            <div class="bar"><div class="fill"></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <button class="download" onclick="exportPDF()">Download PDF</button>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+    <script>
+      /* SMART PLACEHOLDER */
+      document.querySelectorAll("[contenteditable]").forEach((el) => {
+        const t = el.innerText.trim();
+        el.dataset.placeholder = t;
+
+        el.addEventListener("focus", () => {
+          if (el.innerText.trim() === el.dataset.placeholder) el.innerText = "";
+        });
+
+        el.addEventListener("blur", () => {
+          if (el.innerText.trim() === "") el.innerText = el.dataset.placeholder;
+        });
+      });
+
+      /* ADD BULLET */
+      function addBullet(id) {
+        const ul = document.getElementById(id);
+        const li = document.createElement("li");
+        li.contentEditable = "true";
+        li.innerText = "New point...";
+        ul.appendChild(li);
+
+        li.dataset.placeholder = "New point...";
+
+        li.onfocus = () => {
+          if (li.innerText === "New point...") li.innerText = "";
+        };
+        li.onblur = () => {
+          if (li.innerText.trim() === "") li.innerText = "New point...";
+        };
+        li.focus();
+      }
+
+      /* SKILL BAR UPDATE */
+      function updateSkill(el) {
+        let val = parseInt(el.innerText.replace("%", ""));
+        if (isNaN(val)) val = 0;
+        if (val > 100) val = 100;
+        if (val < 0) val = 0;
+        el.innerText = val + "%";
+
+        const fill = el.closest(".skill").querySelector(".fill");
+        fill.style.width = val + "%";
+      }
+
+      /* INIT BARS */
+      document
+        .querySelectorAll(".skill-percent")
+        .forEach((el) => updateSkill(el));
+
+      /* PHOTO */
+      photoBox.onclick = () => photoInput.click();
+      photoInput.onchange = (e) => {
+        const f = e.target.files[0];
+        if (!f) return;
+        const r = new FileReader();
+        r.onload = () => (photo.src = r.result);
+        r.readAsDataURL(f);
+      };
+
+      /* PDF */
+      async function exportPDF() {
+        const { jsPDF } = window.jspdf;
+        const canvas = await html2canvas(document.getElementById("resume"), {
+          scale: 2,
+        });
+        const img = canvas.toDataURL("image/jpeg", 1);
+        const pdf = new jsPDF("p", "px", [794, 1123]);
+        pdf.addImage(img, "JPEG", 0, 0, 794, 1123);
+        pdf.save("resume.pdf");
+      }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,475 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Professional Resume</title>
+    <style>
+          * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+        body {
+        font-family: "Open Sans", sans-serif;
+        background: #050b2c;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 40px 0;
+        min-height: 100vh;
+        color: rgb(0, 0, 0);
+        overflow-x: hidden;
+      }
+      /* CANVAS */
+      #bgCanvas {
+        position: fixed;
+        inset: 0;
+        z-index: -2;
+      }
+      .bg-glow {
+        position: fixed;
+        inset: 0;
+        background: radial-gradient(
+          circle at 30% 20%,
+          rgba(77, 163, 255, 0.15),
+          transparent 70%
+        );
+        z-index: -1;
+      }
+
+      /* ===== SIDEBAR ===== */
+      .sidebar {
+        position: fixed;
+        left: 20px;
+        top: 20px;
+        bottom: 20px;
+        width: 70px;
+        background: linear-gradient(135deg, #0a2540, #1d6dbc);
+        border-radius: 20px;
+        padding: 18px 10px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 25px;
+        transition: 0.35s;
+        z-index: 10;
+        overflow: hidden;
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+      }
+
+      .sidebar:hover {
+        width: 220px;
+      }
+
+      .side-logo {
+        font-size: 22px;
+        font-weight: 700;
+        color: #fff;
+        white-space: nowrap;
+      }
+      .side-logo span {
+        color: var(--accent);
+      }
+
+      .side-links {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        gap: 12px;
+      }
+
+      .side-links a {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        padding: 12px 14px;
+        color: #e5e7eb;
+        text-decoration: none;
+        border-radius: 14px;
+        font-size: 14px;
+        white-space: nowrap;
+        transition: 0.3s;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .side-links a span {
+        opacity: 0;
+        transition: 0.3s;
+      }
+      .sidebar:hover .side-links a span {
+        opacity: 1;
+      }
+
+      .side-links a:hover {
+        background: rgba(77, 163, 255, 0.18);
+        transform: translateX(6px);
+        box-shadow: 0 0 12px rgba(77, 163, 255, 0.5);
+      }
+
+      .side-links a.active {
+        background: #1e5fa8;
+        animation: pulse 2s infinite;
+      }
+
+      @keyframes pulse {
+        0% {
+          box-shadow: 0 0 10px rgba(77, 163, 255, 0.4);
+        }
+        50% {
+          box-shadow: 0 0 26px rgba(77, 163, 255, 0.8);
+        }
+        100% {
+          box-shadow: 0 0 10px rgba(77, 163, 255, 0.4);
+        }
+      }
+
+      /* ===== CONTENT PUSH ===== */
+
+      .app-content {
+        margin-left: 110px;
+        padding: 20px;
+        transition: margin-left 0.35s ease;
+      }
+
+      .sidebar:hover ~ .app-content {
+        margin-left: 260px;
+      }
+
+      /* ===== PAGE TITLE ===== */
+      .page-title h1 {
+        font-size: 30px;
+        margin-bottom: 4px;
+      }
+      .page-title p {
+        color: var(--muted);
+      }
+      .resume {
+        width: 794px;
+        height: 1123px;
+        background: #fff;
+        display: flex;
+        overflow: auto;
+      }
+
+      /* LEFT SIDEBAR */
+      .left {
+        width: 32%;
+        background: #ededed;
+        padding: 28px;
+        box-sizing: border-box;
+        text-align: center;
+      }
+
+      .avatar {
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+        background: #bfc4cc;
+        margin: auto;
+        cursor: pointer;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .avatar img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+      }
+
+      .left h4 {
+        margin-top: 30px;
+        font-size: 14px;
+        letter-spacing: 1px;
+        border-bottom: 1px solid #aaa;
+        padding-bottom: 6px;
+      }
+
+      .left p,
+      .left li {
+        font-size: 13px;
+        margin: 6px 0;
+      }
+
+      .left ul {
+        padding-left: 16px;
+        text-align: left;
+      }
+
+      /* RIGHT */
+      .right {
+        width: 68%;
+        padding: 0;
+        position: relative;
+      }
+
+      /* NAME BAR */
+      .namebar {
+        background: #2f3a4a;
+        color: #fff;
+        padding: 22px;
+        text-align: center;
+        font-size: 28px;
+        font-weight: bold;
+        letter-spacing: 1px;
+      }
+
+      /* CONTENT */
+      .content {
+        padding: 30px 35px;
+        position: relative;
+      }
+
+      .timeline {
+        position: absolute;
+        left: 18px;
+        top: 0;
+        bottom: 0;
+        width: 2px;
+        background: #d2d6dd;
+      }
+
+      .section {
+        display: flex;
+        gap: 20px;
+        margin-bottom: 28px;
+        position: relative;
+      }
+
+      .dot {
+        width: 12px;
+        height: 12px;
+        background: #2f3a4a;
+        border-radius: 50%;
+        margin-top: 4px;
+        z-index: 2;
+      }
+
+      .text {
+        flex: 1;
+      }
+
+      .text h3 {
+        margin: 0;
+        font-size: 15px;
+        color: #2f3a4a;
+        border-bottom: 1px solid #ccc;
+        padding-bottom: 6px;
+        cursor: text;
+      }
+
+      .text p,
+      .text li {
+        font-size: 13.5px;
+        margin: 6px 0;
+      }
+
+      .text ul {
+        padding-left: 18px;
+      }
+
+      /* Remove outline */
+      [contenteditable]:focus {
+        outline: none;
+      }
+
+      /* ADD BUTTON */
+      .add-btn {
+        margin-left: 6px;
+        background: #2f3a4a;
+        color: #fff;
+        border: none;
+        font-size: 12px;
+        padding: 0 6px;
+        cursor: pointer;
+        border-radius: 4px;
+      }
+
+      /* DOWNLOAD */
+      .download-btn {
+        margin: 20px;
+        padding: 12px 28px;
+        border: none;
+        background: #2f3a4a;
+        color: #fff;
+        font-size: 16px;
+        cursor: pointer;
+      }
+      .download-btn:hover {
+        background-color: #145f3b;
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <div class="side-logo">AI<span>Hub</span></div>
+
+      <nav class="side-links">
+        <a href="home.html">🏠 <span>Home</span></a>
+        <a href="blog.html">✍️ <span>AI Blog Studio</span></a>
+        <a href="resume-home.html" class="active"
+          >📄 <span>AI Resume Studio</span></a
+        >
+        <a href="#">📌 <span>Projects</span></a>
+        <a href="#">👤 <span>Profile</span></a>
+      </nav>
+    </aside>
+
+    <div class="resume" id="resume">
+      <div class="left">
+        <div class="avatar" id="avatar">Click to add photo</div>
+        <input type="file" id="avatarInput" hidden />
+
+        <h4>CONTACT</h4>
+        <p contenteditable="true">Phone: Your Number</p>
+        <p contenteditable="true">Email: your@email.com</p>
+        <p contenteditable="true">Location: City, State</p>
+
+        <h4>CERTIFICATIONS</h4>
+        <ul id="certifications">
+          <li contenteditable="true">Certification Name</li>
+          <li contenteditable="true">Institute, Year</li>
+        </ul>
+        <button class="add-btn" onclick="addListItem('certifications')">
+          + Add
+        </button>
+
+        <h4>LANGUAGES</h4>
+        <ul id="languages">
+          <li contenteditable="true">English (Fluent)</li>
+          <li contenteditable="true">Hindi (Fluent)</li>
+        </ul>
+        <button class="add-btn" onclick="addListItem('languages')">
+          + Add
+        </button>
+      </div>
+
+      <div class="right">
+        <div class="namebar" contenteditable="true">YOUR FULL NAME</div>
+
+        <div class="content">
+          <div class="timeline"></div>
+
+          <div class="section">
+            <div class="dot"></div>
+            <div class="text">
+              <h3 contenteditable="true">CAREER OBJECTIVE</h3>
+              <p contenteditable="true">
+                Motivated and detail-oriented graduate seeking a position to
+                apply skills.
+              </p>
+            </div>
+          </div>
+
+          <div class="section">
+            <div class="dot"></div>
+            <div class="text">
+              <h3 contenteditable="true">KEY SKILLS</h3>
+              <ul id="skills">
+                <li contenteditable="true">
+                  Technical: MS Office, Excel, Programming Tools
+                </li>
+                <li contenteditable="true">
+                  Soft Skills: Communication, Teamwork
+                </li>
+              </ul>
+              <button class="add-btn" onclick="addListItem('skills')">
+                + Add
+              </button>
+            </div>
+          </div>
+
+          <div class="section">
+            <div class="dot"></div>
+            <div class="text">
+              <h3 contenteditable="true">EXPERIENCE</h3>
+              <ul id="experience">
+                <li contenteditable="true">
+                  Developed responsive web applications
+                </li>
+                <li contenteditable="true">
+                  Worked with APIs and backend systems
+                </li>
+              </ul>
+              <button class="add-btn" onclick="addListItem('experience')">
+                + Add
+              </button>
+            </div>
+          </div>
+
+          <div class="section">
+            <div class="dot"></div>
+            <div class="text">
+              <h3 contenteditable="true">EDUCATION</h3>
+              <ul id="education">
+                <li contenteditable="true">Diploma in IT – Polytechnic</li>
+                <li contenteditable="true">CGPA: 8.5/10</li>
+              </ul>
+              <button class="add-btn" onclick="addListItem('education')">
+                + Add
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <button class="download-btn" onclick="exportPDF()">Download Resume</button>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+    <script>
+      // AUTO CLEAR DEFAULT TEXT (NO DESIGN CHANGE)
+      document.querySelectorAll("[contenteditable]").forEach((el) => {
+        const original = el.innerText;
+
+        el.addEventListener("focus", () => {
+          if (el.innerText === original) {
+            el.innerText = "";
+          }
+        });
+
+        el.addEventListener("blur", () => {
+          if (el.innerText.trim() === "") {
+            el.innerText = original;
+          }
+        });
+      });
+
+      // ADD BULLET
+      function addListItem(id) {
+        const ul = document.getElementById(id);
+        const li = document.createElement("li");
+        li.contentEditable = "true";
+        li.innerText = "New item";
+        ul.appendChild(li);
+        li.focus();
+      }
+
+      // AVATAR
+      avatar.onclick = () => avatarInput.click();
+      avatarInput.onchange = (e) => {
+        const r = new FileReader();
+        r.onload = () => (avatar.innerHTML = `<img src="${r.result}">`);
+        r.readAsDataURL(e.target.files[0]);
+      };
+
+      // PDF
+      async function exportPDF() {
+        const canvas = await html2canvas(resume, { scale: 2 });
+        const { jsPDF } = window.jspdf;
+        const pdf = new jsPDF("p", "px", [794, 1123]);
+        pdf.addImage(canvas, "JPEG", 0, 0, 794, 1123);
+        pdf.save("resume.pdf");
+      }
+    </script>
+    <script src="bg.js"></script>
+  </body>
+</html>
