@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Template Gallery | AIHub</title>
+
+<!-- SAME CSS AS BLOG / RESUME PAGE -->
+<link rel="stylesheet" href="blog.css">
+
+<style>
+/* ===== TEMPLATE GRID ONLY (does NOT touch sidebar/bg) ===== */
+
+.template-grid{
+  display: grid;
+  grid-template-columns: repeat(4, 260px);
+  justify-content: center;
+  gap: 40px;
+  padding: 40px 60px 80px;
+}
+
+.template-card{
+  background: #ffffff;
+  border-radius: 18px;
+  overflow: hidden;
+  cursor: pointer;
+  box-shadow: 0 10px 22px rgba(0,0,0,0.18);
+  transition: 0.3s;
+}
+
+.template-card:hover{
+  transform: translateY(-8px);
+  box-shadow: 0 18px 36px rgba(0,0,0,0.3);
+}
+
+.template-img{
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  background: #f4f6f8;
+  overflow: hidden;
+}
+
+.template-img img{
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.template-title{
+  padding: 16px 0 18px;
+  text-align: center;
+  font-weight: 600;
+  color: #333;
+}
+
+/* RESPONSIVE */
+@media(max-width:1200px){
+  .template-grid{
+    grid-template-columns: repeat(3,260px);
+  }
+}
+
+@media(max-width:900px){
+  .template-grid{
+    grid-template-columns: repeat(2,260px);
+  }
+}
+
+@media(max-width:600px){
+  .template-grid{
+    grid-template-columns: 1fr;
+    padding: 20px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<!-- BACKGROUND (SAME AS BLOG / RESUME PAGE) -->
+<canvas id="bgCanvas"></canvas>
+<div class="bg-glow"></div>
+
+<!-- SIDEBAR (UNCHANGED) -->
+<aside class="sidebar">
+  <div class="side-logo">AI<span>Hub</span></div>
+
+  <nav class="side-links">
+    <a href="home.html">🏠 <span>Home</span></a>
+    <a href="blog.html">✍️ <span>AI Blog Studio</span></a>
+    <a href="resume-home.html">📄 <span>AI Resume Studio</span></a>
+    <a href="#" class="active">🖼️ <span>Templates</span></a>
+    <a href="#">👤 <span>Profile</span></a>
+  </nav>
+</aside>
+
+<!-- CONTENT -->
+<div class="app-content">
+
+  <div class="page-title">
+    <h1>Resume Templates</h1>
+    <p>Select a professional template to start</p>
+  </div>
+
+  <!-- TEMPLATE GALLERY -->
+  <div class="template-grid">
+
+    <!-- 4 -->
+    <div class="template-card">
+      <a href="resume1.html"><div class="template-img"><img src="RESUME1.jpg"></div></a>
+      <div class="template-title">Template 1</div>
+    </div>
+
+    <div class="template-card">
+      <a href="resume2.html"><div class="template-img"><img src="resume2.png"></div></a>
+      <div class="template-title">Template 2</div>
+    </div>
+
+    <div class="template-card">
+     <a href="resume3.html"> <div class="template-img"><img src="RESUME3.png"></div></a>
+      <div class="template-title">Template 3</div>
+    </div>
+
+    <div class="template-card">
+      <div class="template-img"><img src="https://via.placeholder.com/800x1100?text=Template+4"></div>
+      <div class="template-title">Template 4</div>
+    </div>
+
+    <!-- 4 -->
+    <div class="template-card">
+      <div class="template-img"><img src="https://via.placeholder.com/800x1100?text=Template+5"></div>
+      <div class="template-title">Template 5</div>
+    </div>
+
+    <div class="template-card">
+      <div class="template-img"><img src="https://via.placeholder.com/800x1100?text=Template+6"></div>
+      <div class="template-title">Template 6</div>
+    </div>
+
+    <div class="template-card">
+      <div class="template-img"><img src="https://via.placeholder.com/800x1100?text=Template+7"></div>
+      <div class="template-title">Template 7</div>
+    </div>
+
+    <div class="template-card">
+      <div class="template-img"><img src="https://via.placeholder.com/800x1100?text=Template+8"></div>
+      <div class="template-title">Template 8</div>
+    </div>
+
+    <!-- 2 -->
+    <div class="template-card">
+      <div class="template-img"><img src="https://via.placeholder.com/800x1100?text=Template+9"></div>
+      <div class="template-title">Template 9</div>
+    </div>
+
+    <div class="template-card">
+      <div class="template-img"><img src="https://via.placeholder.com/800x1100?text=Template+10"></div>
+      <div class="template-title">Template 10</div>
+    </div>
+
+  </div>
+
+</div>
+
+<script src="bg.js"></script>
+
+</body>
+</html>
